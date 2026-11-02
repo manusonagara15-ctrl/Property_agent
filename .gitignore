@@ -10,6 +10,10 @@ __pycache__/
 *$py.class
 *.so
 
+# Local property data
+data/*.db
+assets/properties/user_uploads/
+
 # Environment Variables
 .env
 .env.*

@@ -1,4 +1,5 @@
 import sqlite3
+from contextlib import closing
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -7,7 +8,9 @@ DB_PATH = DATA_DIR / "property_agent.db"
 
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-with sqlite3.connect(DB_PATH) as conn:
+with closing(sqlite3.connect(DB_PATH)) as conn:
+    conn.execute("PRAGMA foreign_keys = ON")
+    conn.execute("BEGIN")
     conn.execute("""
         CREATE TABLE IF NOT EXISTS properties (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -55,5 +58,7 @@ with sqlite3.connect(DB_PATH) as conn:
                 price, bedrooms, area_sqft, description
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """, sample_properties)
+
+    conn.commit()
 
 print(f"Database ready: {DB_PATH}")
