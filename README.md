@@ -13,6 +13,21 @@ A local Streamlit property search, listing management, AI assistant, CRM, review
 
 The active `app.py` no longer imports `frontend/`, `backend/`, or `services/`; the runtime logic is in one file. The folders from the original archive were reviewed, and the duplicate module copies are omitted from this clean package so there is a single active source of truth.
 
+## Optional price-estimation tools
+
+The `ml/` package contains feature preparation, model training, and price-prediction scripts. Install their extra dependencies with:
+
+```powershell
+python -m pip install -r requirements-ml.txt
+```
+
+Training expects a prepared CSV with at least 30 usable rows and a `price` (INR crore), `price_crore`, or `price_inr` target column. By default it reads `data/processed/house_prices_training.csv`; supply another CSV with `--input`. Training writes the model to `models/linear_regression_model.joblib` and metrics to `reports/`. The training data and generated model are local artifacts and are not included in this repository.
+
+```powershell
+python ml/train_linear_regression.py --input data/processed/house_prices_training.csv
+python ml/predict_price.py --area 1200 --bedrooms 2 --bathrooms 2
+```
+
 ## Windows setup
 
 ```powershell
